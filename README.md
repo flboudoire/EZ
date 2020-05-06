@@ -1,3 +1,3 @@
-A python module to load, fit and plot chemical kinetics data. In particular, it can be used to extract reaction time constants from experimental data. This data should at least describe the evolution of some of the species concentration over time. Optionally, if an electrochemical measurement was performed, the fit can also include the charge passed over time in order to improve the fit of the model parameters.
+A python module to load, fit and plot impedance spectroscopy data. The datasets contain the impedance evolution as a function of the frequency of a perturbation (e.g. potential or light bias), recorded at different applied potentials. This data can be fitted using a model equivalent circuit or a custom model equation.
 
 Documentation can be consulted [here](TODO: add link when online)

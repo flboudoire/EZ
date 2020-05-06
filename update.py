@@ -61,4 +61,4 @@ for file in ipynb_files:
     os.system(rf"cp -ar {file}_files docs/_build/html/{fname}_files")
 
 # git
-# os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
+os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
