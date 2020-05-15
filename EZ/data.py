@@ -219,7 +219,7 @@ def figure_layout():
         "imag": r"-Im(Z) [k$\Omega \cdot$cm$^{2}$]"
     }
     
-    width = 14/2.54 # 18 cm to inches
+    width = 16/2.54 # 18 cm to inches
     fig = plt.figure(figsize=(width, width/2))
     ax = list()
     grid = (2, 2)
