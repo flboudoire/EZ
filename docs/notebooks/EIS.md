@@ -27,15 +27,21 @@ circ_s = Q_s/R_s
 
 
 ```python
-ds = Dataset(
-    file = directory + file,
-    pH = 7,
-    N_points_min = 20,
-    range_omega = [-np.inf, 1e5]
-)
+from EZ.data import Dataset
 
-ds.plot(partial_circuits = [RC_b, RC_s])
+ds = Dataset(
+    folder = "data/EIS CFO pH14 light",
+    pH = 14,
+    area = 0.25
+)
+ds.set_freq_range([-np.inf, 1e4])
+# ds.data(0).plot(partial_circuits = [circ_b, circ_s])
+ds.plot()
 ```
+
+
+<p align='center'><img src = EIS_files/EIS_4_0.svg
+></p>
 
 ### Fitting and displaying fit results
 
