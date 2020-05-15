@@ -208,7 +208,8 @@ class Dataset():
             dmy,
             orientation = "horizontal",
             ticks = make_ticks(self.Es),
-            label = self.E_label
+            label = self.E_label,
+            pad = 0.17
             )
 
 def figure_layout():
@@ -244,8 +245,8 @@ def figure_layout():
 
 def make_ticks(x):
 
-    # step if 10 intervals
-    step = (max(x)-min(x))/10
+    # step if 7 intervals
+    step = (max(x)-min(x))/7
 
     # find power of ten
     exp10_x = int(np.floor(np.log10(abs(step))))

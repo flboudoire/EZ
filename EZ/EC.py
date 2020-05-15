@@ -11,8 +11,13 @@ import SchemDraw as schem
 
 
 sym_omega = sym.Symbol(r"omega", real=True)
-schem_unit = 2
-
+schem_unit = 1
+style = dict(
+    schem_unit = schem_unit,
+    inches_per_unit = 0.3,
+    lw = 1,
+    fontsize = 10
+    )
 
 
 class Circuit:
@@ -56,9 +61,9 @@ class Circuit:
         # Update schem
         schem_1 = schem.group_elements(circuit_1.schem)
         schem_2 = schem.group_elements(circuit_2.schem)
-        self.schem = schem.Drawing(schem_unit)
+        self.schem = schem.Drawing(**style)
         self.schem.add(schem_1)
-        self.schem.add(schem.elements.LINE, d='right', l = schem_unit/4)
+        self.schem.add(schem.elements.LINE, d='right', l = 0)
         self.schem.add(schem_2)
         self.schem_height = np.max([
             circuit_1.schem_height,
@@ -88,7 +93,7 @@ class Circuit:
         schem_1 = schem.group_elements(circuit_1.schem)
         schem_2 = schem.group_elements(circuit_2.schem)
 
-        self.schem = schem.Drawing(schem_unit)
+        self.schem = schem.Drawing(**style)
         self.schem.push()
         c1 = self.schem.add(schem_1)
         self.schem.pop()
@@ -163,7 +168,7 @@ class Circuit:
 
         values = dict()
         for name in self.symbols:
-            if name is not "omega":
+            if name != "omega":
                 values.update({self.symbols[name]: pars[name].value})
 
         Z = lambdify(sym_omega, self.Z.subs(values), "numpy")(omega)
@@ -268,7 +273,7 @@ class R(Circuit):
         self.sym_R = sym.Symbol(f"R_{self.label}", real=True)
         self.values = R
         self.set_Z(A = self.sym_R)
-        self.schem = schem.Drawing(schem_unit)
+        self.schem = schem.Drawing(**style)
         self.schem.add(schem.elements.RES, d='right',label=self.description)
 
     @property
@@ -287,7 +292,7 @@ class C(Circuit):
         self.sym_C = sym.Symbol(f"C_{self.label}", real=True)
         self.values = C
         self.set_Z(A = 1/self.sym_C, n = 1)
-        self.schem = schem.Drawing(schem_unit)
+        self.schem = schem.Drawing(**style)
         self.schem.add(schem.elements.CAP, d='right',label=self.description)
 
     @property
@@ -307,7 +312,7 @@ class Q(Circuit):
         self.sym_n = sym.Symbol(f"n_{self.label}", real=True)
         self.values = (Q, n)
         self.set_Z(A = 1/self.sym_Q, n = self.sym_n)
-        self.schem = schem.Drawing(schem_unit)
+        self.schem = schem.Drawing(**style)
         self.schem.add(schem.elements.CAP, d='right',label=self.description)
 
     @property
@@ -329,7 +334,7 @@ class W(Circuit):
         self.sym_sigma = sym.Symbol(f"sigma_{self.label}", real=True)
         self.values = sigma
         self.set_Z(sigma = self.sym_sigma)
-        self.schem = schem.Drawing(schem_unit)
+        self.schem = schem.Drawing(**style)
         left = {'cnt':1}
         right = {'cnt':1}
         elem = schem.elements.blackbox(
