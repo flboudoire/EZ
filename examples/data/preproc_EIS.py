@@ -7,7 +7,7 @@ import os
 class Data():
     def __init__(self, freq, Z, E = float('nan')):
         self.freq = freq
-        self.Z = Z
+        self.Z = Z/1000
         self.E = E
 
 def load_raw(file, delimiter = "\t"):
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     for data in datas:
         content = pd.DataFrame(
             np.array([data.freq, np.real(data.Z), np.imag(data.Z)]).T,
-            columns = ["Frequency [Hz]", "Re(Z) [Ohm]", "Im(Z) [Ohm]"]
+            columns = ["Frequency [Hz]", "Re(Z) [kOhm]", "Im(Z) [kOhm]"]
             )
         str_E = fr"{data.E:.3f}".replace(".", "_")
         content.to_csv(rf"{folder}/{str_E} V vs Ag_AgCl.csv", index=False)
