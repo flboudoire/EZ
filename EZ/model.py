@@ -4,6 +4,8 @@ from EZ.data import figure_layout
 import lmfit
 import SchemDraw as schem
 import sympy as sym
+from sympy.parsing.sympy_parser import parse_expr
+from sympy.printing.mathml import print_mathml
 
 sym.init_printing(use_latex='mathjax')
 sym_omega = sym.Symbol(r"omega", real=True)
@@ -16,12 +18,49 @@ style = dict(
 )
 
 
+class Equation:
+
+    def __init__(self, expression):
+
+        self.function = parse_expr(expression)
+
+
+    def print(self):
+        Z = sym.Symbol(r"\rm Z(\omega)")
+        display(sym.Eq(Z, self.function))
+
+
+
+    def eval_Z(self, pars, omega):
+        return
+
+    def plot(
+        self,
+        pars,
+        range_omega=[1e-3, 1e3],
+        axes=None,
+        color="C0",
+        partial_models=None
+    ):
+
+        if axes is None:
+            fig, axes = figure_layout()
+
+        range_omega = np.log10(range_omega)
+        omega = np.logspace(np.min(range_omega), np.max(range_omega), 200)
+        Z = self.eval_Z(pars, omega)
+
+        axes[0].plot(omega, -Z.imag, color=color, linewidth=1.)
+        axes[1].plot(omega, Z.real, color=color, linewidth=1.)
+        axes[2].plot(Z.real, -Z.imag, color=color, linewidth=1.)
+
+
 class Circuit:
 
     def __init__(self, label=""):
 
         # List of Circuits corresponding to one RC response
-        self.partial_circuits = list()
+        self.partial_models = list()
 
         # Description of the component based on its class and label
         self.description = type(self).__name__ + r"$\rm _{%s}$" % label
@@ -216,7 +255,7 @@ class Circuit:
         range_omega=[1e-3, 1e3],
         axes=None,
         color="C0",
-        partial_circuits=None
+        partial_models=None
     ):
 
         if axes is None:
@@ -230,9 +269,9 @@ class Circuit:
         axes[1].plot(omega, Z.real, color=color, linewidth=1.)
         axes[2].plot(Z.real, -Z.imag, color=color, linewidth=1.)
 
-        if partial_circuits is not None:
+        if partial_models is not None:
             Zs = dict()
-            for circuit in partial_circuits:
+            for circuit in partial_models:
                 Zs.update({circuit: circuit.eval_Z(pars, omega)})
             for i, c_1 in enumerate(Zs):
                 idx = np.ones(len(Z), dtype=bool)

@@ -4,16 +4,16 @@ This example showcases the use of the EZ module in order to fit electrochemical 
 
 
 ```python
-from EZ import EC
+from EZ.model import Q, R
 
-R_sol = EC.R("S")
-R_b = EC.R("Bulk")
-Q_b = EC.Q("SC")
-R_s = EC.R("SS")
-Q_s = EC.Q("SS")
+R_sol = R("S")
+R_b = R("Bulk")
+Q_b = Q("SC")
+R_s = R("SS")
+Q_s = Q("SS")
 
-circ = R_sol + Q_b/(R_b + Q_s/R_s)
-circ.print()
+model = R_sol + Q_b/(R_b + Q_s/R_s)
+model.print()
 ```
 
 
@@ -23,17 +23,17 @@ circ.print()
 
 ```python
 pars = {
-    "R_S": dict(value = 0.025, vary = False),
+    "R_S":    dict(value = 0.025, vary = False),
     "R_Bulk": dict(value = 2),
-    "R_SS": dict(value = 10),
-    "Q_SC": dict(value = 1e-2),
-    "Q_SS": dict(value = 1e-1),
-    "n_SC": dict(value = 0.9, vary = False),
-    "n_SS": dict(value = 0.8, vary = False)
+    "R_SS":   dict(value = 10),
+    "Q_SC":   dict(value = 1e-2),
+    "Q_SS":   dict(value = 1e-1),
+    "n_SC":   dict(value = 0.9, vary = False),
+    "n_SS":   dict(value = 0.8, vary = False)
 }
-circ.plot(
-    partial_circuits = [Q_b/R_b, Q_s/R_s],
-    pars = pars
+model.plot(
+    partial_models=[Q_b/R_b, Q_s/R_s],
+    pars=pars
 )
 ```
 
@@ -48,9 +48,9 @@ circ.plot(
 from EZ.data import Dataset
 
 ds = Dataset(
-    folder = "data/EIS CFO pH14 light",
-    pH = 14,
-    area = 0.25
+    folder="data/EIS CFO pH14 light",
+    pH=14,
+    area=0.25
 )
 ds.set_freq_range([-np.inf, 1e4])
 ds.plot()
@@ -64,7 +64,7 @@ ds.plot()
 
 
 ```python
-ds.fit(circ, pars = pars)
+ds.fit(model, pars=pars)
 ds.plot()
 ```
 

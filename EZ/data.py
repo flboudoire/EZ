@@ -14,7 +14,6 @@ class Data():
     def __init__(self, file_path):
 
         self.file_path = file_path
-        self.circuit = None
         self.model = None
         self.load()
 
@@ -37,7 +36,7 @@ class Data():
         axes=None,
         color="C0",
         print_result=True,
-        partial_circuits=None
+        partial_models=None
     ):
 
         if axes is None:
@@ -53,22 +52,22 @@ class Data():
         axes[1].plot(self.omega, self.Z.real, **style)
         axes[2].plot(self.Z.real, -self.Z.imag, **style)
 
-        if self.circuit is not None:
-            self.circuit.plot(
+        if self.model is not None:
+            self.model.plot(
                 axes=axes,
                 pars=self.fit_result.params,
                 color=color,
                 range_omega=[np.min(self.omega), np.max(self.omega)],
-                partial_circuits=partial_circuits
+                partial_models=partial_models
             )
             if print_result:
                 display_pars(self.fit_result.params)
 
-    def fit(self, circuit=None, pars=dict(), print_result=True):
+    def fit(self, model=None, pars=dict(), print_result=True):
 
-        if type(circuit).__name__ == "Circuit":
-            self.circuit = circuit
-            self.fit_result = circuit.fit(
+        if type(model).__name__ == "Circuit":
+            self.model = model
+            self.fit_result = model.fit(
                 self.omega,
                 self.Z,
                 pars=pars,
@@ -128,7 +127,7 @@ class Dataset():
 
     def fit(
         self,
-        circuit,
+        model,
         pars=dict(),
         print_result=False,
         consecutive=True
@@ -151,7 +150,7 @@ class Dataset():
                 init_pars = pars
 
             self.datas[E].fit(
-                circuit=circuit,
+                model=model,
                 pars=init_pars,
                 print_result=print_result
             )
@@ -188,7 +187,7 @@ class Dataset():
         self,
         axes=None,
         print_result=True,
-        partial_circuits=None
+        partial_models=None
     ):
 
         if axes is None:
