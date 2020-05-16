@@ -39,7 +39,7 @@ for file in ipynb_files:
                 clean_md +=  re.sub(pattern, repl, line)
             elif "$" in line:
                 pattern = r'\$(.*?)\$'
-                repl = r"<p>.. :math:`\1`</p>"
+                repl = r":math:`\1`"
                 clean_md +=  re.sub(pattern, repl, line)
             elif "<table" in line:
                 pattern = r'class\=\"(.*?)\"'
