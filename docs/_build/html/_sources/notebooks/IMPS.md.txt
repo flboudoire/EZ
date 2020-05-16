@@ -10,7 +10,7 @@ model.print()
 ```
 
 
-:math:`\displaystyle \rm Z(\omega) = \frac{J_{e}}{i \omega \tau_{e} + 1} + \frac{J_{r}}{i \omega \tau_{r} + 1}`
+<center>:math:`\displaystyle \rm Z(\omega) = \frac{J_{e}}{i \omega \tau_{e} + 1} + \frac{J_{r}}{i \omega \tau_{r} + 1}`</center>
 
 
 ### Loading and plotting the IMPS data
