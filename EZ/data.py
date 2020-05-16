@@ -65,17 +65,14 @@ class Data():
 
     def fit(self, model=None, pars=dict(), print_result=True):
 
-        if type(model).__name__ == "Circuit":
-            self.model = model
-            self.fit_result = model.fit(
-                self.omega,
-                self.Z,
-                pars=pars,
-                print_result=print_result
-            )
-            self.pars = self.fit_result.params
-        else:
-            raise ValueError()
+        self.model = model
+        self.fit_result = model.fit(
+            self.omega,
+            self.Z,
+            pars=pars,
+            print_result=print_result
+        )
+        self.pars = self.fit_result.params
 
 
 class Dataset():

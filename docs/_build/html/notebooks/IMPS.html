@@ -155,13 +155,29 @@
 <h1>Model equation definition<a class="headerlink" href="#model-equation-definition" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.model</span> <span class="kn">import</span> <span class="n">Equation</span>
 
-<span class="n">expression</span> <span class="o">=</span> <span class="s2">&quot;J_e/(1+(1j*omega*tau_e)) + J_r/(1+(1j*omega*tau_r))&quot;</span>
+<span class="n">J_bulk</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;J_e/(1+(1j*omega*tau_e))&quot;</span>
+<span class="n">J_surf</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;J_r/(1+(1j*omega*tau_r))&quot;</span>
+<span class="n">expression</span> <span class="o">=</span> <span class="sa">fr</span><span class="s2">&quot;</span><span class="si">{J_bulk}</span><span class="s2"> + </span><span class="si">{J_surf}</span><span class="s2">&quot;</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Equation</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><span class="math notranslate nohighlight">\(\displaystyle \rm Z(\omega) = \frac{J_{e}}{i \omega \tau_{e} + 1} + \frac{J_{r}}{i \omega \tau_{r} + 1}\)</span></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;J_e&quot;</span><span class="p">:</span>   <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">),</span>
+    <span class="s2">&quot;J_r&quot;</span><span class="p">:</span>   <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">),</span>
+    <span class="s2">&quot;tau_e&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="mf">2e-4</span><span class="p">),</span>
+    <span class="s2">&quot;tau_r&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="mf">2e-3</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">partial_models</span><span class="o">=</span><span class="p">[</span><span class="n">J_bulk</span><span class="p">,</span> <span class="n">J_surf</span><span class="p">],</span>
+    <span class="n">pars</span><span class="o">=</span><span class="n">pars</span><span class="p">,</span>
+    <span class="n">range_omega</span><span class="o">=</span><span class="p">[</span><span class="mf">1e1</span><span class="p">,</span> <span class="mf">1e6</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
 </div>
+<p align='center'><img src = IMPS_files/IMPS_2_0.svg
+></p></div>
 <div class="section" id="loading-and-plotting-the-imps-data">
 <h1>Loading and plotting the IMPS data<a class="headerlink" href="#loading-and-plotting-the-imps-data" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
@@ -174,7 +190,15 @@
 <span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<p align='center'><img src = IMPS_files/IMPS_3_0.svg
+<p align='center'><img src = IMPS_files/IMPS_4_0.svg
+></p></div>
+<div class="section" id="fitting-and-displaying-fit-results">
+<h1>Fitting and displaying fit results<a class="headerlink" href="#fitting-and-displaying-fit-results" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">pars</span><span class="o">=</span><span class="n">pars</span><span class="p">)</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p align='center'><img src = IMPS_files/IMPS_6_0.svg
 ></p></div>
 
 

@@ -6,6 +6,7 @@ import SchemDraw as schem
 import sympy as sym
 from sympy.parsing.sympy_parser import parse_expr
 from sympy.printing.mathml import print_mathml
+from sympy.printing.latex import latex
 
 sym.init_printing(use_latex='mathjax')
 sym_omega = sym.Symbol(r"omega", real=True)
@@ -18,21 +19,90 @@ style = dict(
 )
 
 
-class Equation:
+class Model:
+
+    def eval_Z(self, pars, omega):
+
+        self.build_symbols()
+
+        values = dict()
+        for name in self.symbols:
+            if name != "omega":
+                if isinstance(pars[name], dict):
+                    value = pars[name]["value"]
+                else:
+                    value = pars[name].value
+                values.update({self.symbols[name]: value})
+
+        Z = lambdify(sym_omega, self.Z.subs(values), "numpy")(omega)
+
+        return Z
+
+    def update_pars(self, pars=dict()):
+
+        for name in pars:
+            if name in self.pars:
+                self.pars[name].set(**pars[name])
+
+    def residual(self, pars, omega, Z):
+
+        values = dict()
+        values.update({sym_omega.name: omega})
+        for name in pars:
+            values.update({name: pars[name].value})
+
+        Z_fit = self.Z_fit(**values)
+        resid = Z - Z_fit
+        return resid.view(np.float)
+
+    def fit(self, omega, Z, pars=dict(), print_result=True):
+
+        self.build_pars()
+        self.build_symbols()
+        self.update_pars(pars)
+        self.Z_fit = lambdify(self.symbols_list, self.Z,
+                              "numpy", dummify=False)
+        args = [omega, Z]
+        result = lmfit.minimize(
+            self.residual,
+            self.pars,
+            args=args,
+            method='leastsq',
+            nan_policy='omit'
+        )
+        return result
+
+
+class Equation(Model):
 
     def __init__(self, expression):
 
-        self.function = parse_expr(expression)
+        self.Z = parse_expr(expression)
+        self.build_symbols()
 
 
     def print(self):
+
         Z = sym.Symbol(r"\rm Z(\omega)")
-        display(sym.Eq(Z, self.function))
+        display(sym.Eq(Z, self.Z))
 
 
+    def build_symbols(self):
 
-    def eval_Z(self, pars, omega):
-        return
+        self.symbols = {sym.name:sym for sym in self.Z.free_symbols}
+        self.symbols_list = list(self.symbols.values())
+
+
+    def build_pars(self):
+
+        self.pars = lmfit.Parameters()
+        for name in self.symbols:
+            if name != "omega":
+                self.pars.add(
+                    name=name,
+                    vary=True
+                )
+
 
     def plot(
         self,
@@ -54,8 +124,34 @@ class Equation:
         axes[1].plot(omega, Z.real, color=color, linewidth=1.)
         axes[2].plot(Z.real, -Z.imag, color=color, linewidth=1.)
 
+        if partial_models is not None:
+            Zs = dict()
+            for expression in partial_models:
+                model = Equation(expression)
+                partial_Z = model.eval_Z(pars, omega)
+                label = rf"$\rm {latex(model.Z)}$"
+                Zs.update({label: partial_Z})
+            for i, c_1 in enumerate(Zs):
+                idx = np.ones(len(Z), dtype=bool)
+                for c_2 in Zs:
+                    if c_1 != c_2:
+                        idx *= (np.abs(np.imag(Zs[c_1]))
+                                > np.abs(np.imag(Zs[c_2])))
 
-class Circuit:
+                kwargs = dict(
+                    color=f"C{i+1}",
+                    label=c_1,
+                    linewidth=1.1
+                )
+                Z_c = np.empty(len(Z), dtype=complex) * np.nan
+                Z_c[idx] = Z[idx]
+                axes[0].plot(omega, -Zs[c_1].imag, **kwargs)
+                axes[1].plot(omega, Zs[c_1].real, **kwargs)
+                axes[2].plot(Z_c.real, -Z_c.imag, **kwargs)
+                axes[0].legend(fontsize=9)
+
+
+class Circuit(Model):
 
     def __init__(self, label=""):
 
@@ -169,6 +265,18 @@ class Circuit:
 
         return result
 
+
+    def build_symbols(self):
+
+        self.symbols = dict()
+        self.symbols_list = list()
+        self.symbols.update({sym_omega.name: sym_omega})
+        self.symbols_list.append(sym_omega)
+        for symbol in self.values:
+            self.symbols.update({symbol.name: symbol})
+            self.symbols_list.append(symbol)
+
+
     def build_pars(self):
 
         self.pars = lmfit.Parameters()
@@ -188,66 +296,6 @@ class Circuit:
                 vary=True
             )
 
-    def eval_Z(self, pars, omega):
-
-        self.build_symbols()
-
-        values = dict()
-        for name in self.symbols:
-            if name != "omega":
-                if isinstance(pars[name], dict):
-                    value = pars[name]["value"]
-                else:
-                    value = pars[name].value
-                values.update({self.symbols[name]: value})
-
-        Z = lambdify(sym_omega, self.Z.subs(values), "numpy")(omega)
-
-        return Z
-
-    def build_symbols(self):
-
-        self.symbols = dict()
-        self.symbols_list = list()
-        self.symbols.update({sym_omega.name: sym_omega})
-        self.symbols_list.append(sym_omega)
-        for symbol in self.values:
-            self.symbols.update({symbol.name: symbol})
-            self.symbols_list.append(symbol)
-
-    def update_pars(self, pars=dict()):
-
-        for name in pars:
-            if name in self.pars:
-                self.pars[name].set(**pars[name])
-
-    def residual(self, pars, omega, Z):
-
-        values = dict()
-        values.update({sym_omega.name: omega})
-        for name in pars:
-            values.update({name: pars[name].value})
-
-        Z_fit = self.Z_fit(**values)
-        resid = Z - Z_fit
-        return resid.view(np.float)
-
-    def fit(self, omega, Z, pars=dict(), print_result=True):
-
-        self.build_pars()
-        self.build_symbols()
-        self.update_pars(pars)
-        self.Z_fit = lambdify(self.symbols_list, self.Z,
-                              "numpy", dummify=False)
-        args = [omega, Z]
-        result = lmfit.minimize(
-            self.residual,
-            self.pars,
-            args=args,
-            method='leastsq',
-            nan_policy='omit'
-        )
-        return result
 
     def plot(
         self,
