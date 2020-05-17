@@ -1,0 +1,6 @@
+README.md
+setup.py
+echem_EZ.egg-info/PKG-INFO
+echem_EZ.egg-info/SOURCES.txt
+echem_EZ.egg-info/dependency_links.txt
+echem_EZ.egg-info/top_level.txt

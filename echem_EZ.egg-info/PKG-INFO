@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: echem-EZ
+Version: 1.0.2
+Summary: EZ - Z vs E made easy
+Home-page: https://github.com/flboudoire/EZ
+Author: Florent Boudoire
+Author-email: flboudoire@gmail.com
+License: UNKNOWN
+Description: A python module to load, fit and plot impedance spectroscopy data. The datasets contain the impedance evolution as a function of the frequency of a perturbation (e.g. potential or light bias), recorded at different applied potentials. This data can be fitted using a model equivalent circuit or a custom model equation.
+        
+        Documentation can be consulted [here](TODO: add link when online)
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

@@ -193,8 +193,7 @@
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span>
     <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;data/IMPS CFO pH14&quot;</span><span class="p">,</span>
-    <span class="n">pH</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
-    <span class="n">area</span><span class="o">=</span><span class="mf">0.25</span>
+    <span class="n">ref</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;RHE&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
@@ -229,71 +228,71 @@
   <thead>
     <tr style="text-align: right;">
       <th>E [V vs RHE]</th>
-      <th>J_e</th>
-      <th>J_e std</th>
-      <th>tau_r</th>
-      <th>tau_r std</th>
       <th>tau_e</th>
       <th>tau_e std</th>
+      <th>tau_r</th>
+      <th>tau_r std</th>
       <th>J_r</th>
       <th>J_r std</th>
+      <th>J_e</th>
+      <th>J_e std</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1.425</th>
-      <td>-2.42</td>
-      <td>0.0131</td>
-      <td>0.000581</td>
-      <td>6.58e-06</td>
+      <th>0.4</th>
       <td>3.48e-05</td>
       <td>3.56e-07</td>
+      <td>0.000581</td>
+      <td>6.58e-06</td>
       <td>2.38</td>
       <td>0.0139</td>
+      <td>-2.42</td>
+      <td>0.0131</td>
     </tr>
     <tr>
-      <th>1.525</th>
-      <td>-2.3</td>
-      <td>0.0114</td>
-      <td>0.000416</td>
-      <td>4.11e-06</td>
+      <th>0.5</th>
       <td>2.74e-05</td>
       <td>2.48e-07</td>
+      <td>0.000416</td>
+      <td>4.11e-06</td>
       <td>2.26</td>
       <td>0.0118</td>
+      <td>-2.3</td>
+      <td>0.0114</td>
     </tr>
     <tr>
-      <th>1.625</th>
-      <td>-1.16</td>
-      <td>0.00741</td>
-      <td>0.000332</td>
-      <td>4.25e-06</td>
+      <th>0.6</th>
       <td>2.19e-05</td>
       <td>2.58e-07</td>
+      <td>0.000332</td>
+      <td>4.25e-06</td>
       <td>1.13</td>
       <td>0.00768</td>
+      <td>-1.16</td>
+      <td>0.00741</td>
     </tr>
     <tr>
-      <th>1.725</th>
-      <td>-0.135</td>
-      <td>0.0012</td>
-      <td>0.000229</td>
-      <td>3.63e-06</td>
+      <th>0.7</th>
       <td>2.16e-05</td>
       <td>3e-07</td>
+      <td>0.000229</td>
+      <td>3.63e-06</td>
       <td>0.132</td>
+      <td>0.0012</td>
+      <td>-0.135</td>
       <td>0.0012</td>
     </tr>
     <tr>
-      <th>1.825</th>
-      <td>-0.00416</td>
-      <td>0.000101</td>
-      <td>0.000151</td>
-      <td>7.19e-06</td>
+      <th>0.8</th>
       <td>1.57e-05</td>
       <td>5.59e-07</td>
+      <td>0.000151</td>
+      <td>7.19e-06</td>
       <td>0.00399</td>
       <td>9.95e-05</td>
+      <td>-0.00416</td>
+      <td>0.000101</td>
     </tr>
   </tbody>
 </table>

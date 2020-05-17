@@ -86,3 +86,8 @@ for file in ipynb_files:
 
 # git
 os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
+
+# pip
+version = "1.0.6"
+os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
+os.system(r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")

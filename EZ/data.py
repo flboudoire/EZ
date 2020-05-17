@@ -12,10 +12,11 @@ import EZ.stderr as stderr
 
 class Data():
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, parent):
 
         self.file_path = file_path
         self.model = None
+        self.parent = parent
         self.load()
 
     def load(self):
@@ -24,6 +25,7 @@ class Data():
         self.freq = raw_data[:, 0]
         self.omega = 2 * np.pi * self.freq
         self.Z = raw_data[:, 1] + 1j * raw_data[:, 2]
+        self.Z /= self.parent.area
 
     def set_freq_range(self, range_freq):
 
@@ -83,6 +85,7 @@ class Dataset():
         self.folder = folder
         self.pH = pH
         self.area = area
+        self.ref = ref
         if self.pH is None:
             self.E_label = fr"E [V vs {ref[0]}]"
         else:
@@ -101,11 +104,11 @@ class Dataset():
                 .replace("_", ".")
             )
             if self.pH is None:
-                E = {k: v for k, v in sorted(self.datas.items())}
+                E += self.ref[1]
             else:
                 E += 0.1976 + 0.0591 * self.pH
             E = np.round(E, 3)
-            self.datas[E] = Data(file_path)
+            self.datas[E] = Data(file_path, self)
 
         self.datas = {k: v for k, v in sorted(self.datas.items())}
         self.Es = [E for E in self.datas]
