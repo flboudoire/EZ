@@ -176,7 +176,7 @@ class Dataset():
 
     def print_result(self, folder = None):
 
-        columns = ["value", "stderr", "min", "max"]
+        columns = ["value", "stderr"]
         fit_results = OrderedDict()
         fit_results_fixed = OrderedDict()
         for i, E in enumerate(self.datas):
@@ -192,19 +192,17 @@ class Dataset():
 
         df = pd.DataFrame(
             index = [name for name in fit_results_fixed],
-            columns = ["value"],
+            columns = ["value (fixed)"],
             data = fit_results_fixed.values())
-        display(HTML(fr'<b>Fixed parameters</b>'))
         display(df)
 
-        for name in fit_results:
-            df = pd.DataFrame(
-                index = self.datas.keys(),
-                columns = columns,
-                data = fit_results[name])
-            df.columns.name = self.E_label
-            display(HTML(fr'<b>{name}</b>'))
-            display(df)
+        cols = [fr"{name} {attr}" for name in fit_results for attr in columns]
+        df = pd.DataFrame(
+            index = self.datas.keys(),
+            columns = cols,
+            data = np.hstack([v for v in fit_results.values()]))
+        df.columns.name = self.E_label
+        display(df)
 
 
 def figure_layout():
