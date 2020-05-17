@@ -88,9 +88,11 @@ if __name__ == "__main__":
             fname = file.split("/")[-1]
             os.system(rf"cp -ar {file}_files docs/_build/html/{fname}_files")
 
+    if len(sys.argv) < 2 or sys.argv[1] == "git":
         # git
         os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
 
+    if len(sys.argv) < 2 or sys.argv[1] == "pip":
         # pip
         dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
         v = int(dmy.split(".")[-1].split("\"")[0])
