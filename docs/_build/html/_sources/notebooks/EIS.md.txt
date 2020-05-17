@@ -16,12 +16,8 @@ model = R_sol + Q_b/(R_b + Q_s/R_s)
 model.print()
 ```
 
-    /usr/lib/python3.8/site-packages/EZ/data.py:256: SyntaxWarning: "is" with a literal. Did you mean "=="?
-      if attr is "vary" or None:
 
-
-
-<p align='center'><img src = EIS_files/EIS_2_1.svg
+<p align='center'><img src = EIS_files/EIS_2_0.svg
 ></p>
 
 

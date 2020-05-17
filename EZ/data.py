@@ -190,11 +190,12 @@ class Dataset():
                 else:
                     fit_results_fixed[name] = pars[name].value
 
-        df = pd.DataFrame(
-            index = [name for name in fit_results_fixed],
-            columns = ["value (fixed)"],
-            data = fit_results_fixed.values())
-        display(df)
+        if len(fit_results_fixed.values()) > 0:
+            df = pd.DataFrame(
+                index = [name for name in fit_results_fixed],
+                columns = ["value (fixed)"],
+                data = fit_results_fixed.values())
+            display(df)
 
         cols = [fr"{name}{attr}" for name in fit_results for attr in ["", " std"]]
         df = pd.DataFrame(
