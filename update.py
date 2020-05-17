@@ -88,6 +88,8 @@ for file in ipynb_files:
 os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
 
 # pip
-version = "1.0.6"
+dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
+v = int(dmy.split(".")[-1].split("\"")[0])
+version = f"1.0.{v+1}"
 os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
 os.system(r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")
