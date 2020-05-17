@@ -4,6 +4,7 @@ import pandas as pd
 import lmfit
 import glob
 from collections import OrderedDict
+from IPython.display import display, HTML
 
 from EZ.parameter import Parameter
 import EZ.stderr as stderr
@@ -35,9 +36,7 @@ class Data():
         self,
         axes=None,
         color="C0",
-        print_result=True,
-        partial_models=None
-    ):
+        partial_models=None):
 
         if axes is None:
             fig, axes = figure_layout()
@@ -60,17 +59,14 @@ class Data():
                 range_omega=[np.min(self.omega), np.max(self.omega)],
                 partial_models=partial_models
             )
-            if print_result:
-                display_pars(self.fit_result.params)
 
-    def fit(self, model=None, pars=dict(), print_result=True):
+    def fit(self, model=None, pars=dict()):
 
         self.model = model
         self.fit_result = model.fit(
             self.omega,
             self.Z,
-            pars=pars,
-            print_result=print_result
+            pars=pars
         )
         self.pars = self.fit_result.params
 
@@ -82,8 +78,7 @@ class Dataset():
         folder,
         pH=None,
         area=1.,
-        ref=("Ag/AgCl", 0)
-    ):
+        ref=("Ag/AgCl", 0)):
 
         self.folder = folder
         self.pH = pH
@@ -126,9 +121,7 @@ class Dataset():
         self,
         model,
         pars=dict(),
-        print_result=False,
-        consecutive=True
-    ):
+        consecutive=True):
 
         for i, E in enumerate(self.datas):
             if i > 0 and consecutive:
@@ -148,44 +141,14 @@ class Dataset():
 
             self.datas[E].fit(
                 model=model,
-                pars=init_pars,
-                print_result=print_result
+                pars=init_pars
             )
-
-        self.pars = dict()
-        for key in self.datas[E].pars:
-            elem, label = key.split("_")
-            name = r"%s$\rm_{%s}$" % (elem, label)
-            scale = 1
-            unit = ""
-            if elem == "R":
-                scale = 1e-3
-                unit = r"k$\rm\Omega\cdot$cm$^{2}$"
-            elif elem == "C":
-                scale = 1e6
-                unit = r"$\rm\mu$F$\cdot$cm$^{-2}$"
-
-            y = list()
-            for data in self.datas:
-                floatstd = stderr.param2floatstd(self.datas[E].pars[key])
-                y.append(floatstd)
-
-            par = Parameter(
-                name=name,
-                x=self.Es,
-                y=y,
-                unit=unit,
-                scale=scale,
-                xlabel=self.E_label
-            )
-            self.pars.update({key: par})
 
     def plot(
         self,
         axes=None,
         print_result=True,
-        partial_models=None
-    ):
+        partial_models=None):
 
         if axes is None:
             fig, axes = figure_layout()
@@ -196,8 +159,7 @@ class Dataset():
             color = cmap(norm_E)
             self.datas[E].plot(
                 axes=axes,
-                color=color,
-                print_result=False,
+                color=color
             )
 
         # Hack to get colorbar for plot in matplotlib
@@ -211,6 +173,39 @@ class Dataset():
             label=self.E_label,
             pad=0.17
         )
+
+    def print_result(self, folder = None):
+
+        columns = ["value", "stderr", "min", "max"]
+        fit_results = OrderedDict()
+        fit_results_fixed = OrderedDict()
+        for i, E in enumerate(self.datas):
+            row = list()
+            pars = self.datas[E].pars
+            for name in pars:
+                if pars[name].vary:
+                    if name not in fit_results: fit_results[name] = list()
+                    values = [f"{getattr(pars[name], attr):.3g}" for attr in columns]
+                    fit_results[name].append(values)
+                else:
+                    fit_results_fixed[name] = pars[name].value
+
+        df = pd.DataFrame(
+            index = [name for name in fit_results_fixed],
+            columns = ["value"],
+            data = fit_results_fixed.values())
+        display(HTML(fr'<b>Fixed parameters</b>'))
+        display(df)
+
+        for name in fit_results:
+            df = pd.DataFrame(
+                index = self.datas.keys(),
+                columns = columns,
+                data = fit_results[name])
+            df.columns.name = self.E_label
+            display(HTML(fr'<b>{name}</b>'))
+            display(df)
+
 
 def figure_layout():
 
