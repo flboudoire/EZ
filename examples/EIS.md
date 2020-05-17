@@ -140,14 +140,14 @@ ds.print_result()
   <thead>
     <tr style="text-align: right;">
       <th>E [V vs RHE]</th>
-      <th>Q_SC value</th>
-      <th>Q_SC stderr</th>
-      <th>R_Bulk value</th>
-      <th>R_Bulk stderr</th>
-      <th>Q_SS value</th>
-      <th>Q_SS stderr</th>
-      <th>R_SS value</th>
-      <th>R_SS stderr</th>
+      <th>Q_SC</th>
+      <th>Q_SC std</th>
+      <th>R_Bulk</th>
+      <th>R_Bulk std</th>
+      <th>Q_SS</th>
+      <th>Q_SS std</th>
+      <th>R_SS</th>
+      <th>R_SS std</th>
     </tr>
   </thead>
   <tbody>

@@ -196,7 +196,7 @@ class Dataset():
             data = fit_results_fixed.values())
         display(df)
 
-        cols = [fr"{name} {attr}" for name in fit_results for attr in columns]
+        cols = [fr"{name}{attr}" for name in fit_results for attr in ["", " std"]]
         df = pd.DataFrame(
             index = self.datas.keys(),
             columns = cols,
