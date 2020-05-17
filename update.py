@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 
 def list_notebooks():
@@ -70,26 +71,29 @@ def export_notebooks(ipynb_files):
             f.write(clean_md)
 
 
-# get all jupyter notebook paths
-ipynb_files = list_notebooks()
+if __name__ == "__main__":
 
-# export jupyter notebooks examples
-export_notebooks(ipynb_files)
+    if len(sys.argv) < 2 or sys.argv[1] == "docs":
+        # get all jupyter notebook paths
+        ipynb_files = list_notebooks()
 
-# update documentation
-os.system(r"cd docs; make clean; make html")
+        # export jupyter notebooks examples
+        export_notebooks(ipynb_files)
 
-# copy images from examples
-for file in ipynb_files:
-    fname = file.split("/")[-1]
-    os.system(rf"cp -ar {file}_files docs/_build/html/{fname}_files")
+        # update documentation
+        os.system(r"cd docs; make clean; make html")
 
-# git
-os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
+        # copy images from examples
+        for file in ipynb_files:
+            fname = file.split("/")[-1]
+            os.system(rf"cp -ar {file}_files docs/_build/html/{fname}_files")
 
-# pip
-dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
-v = int(dmy.split(".")[-1].split("\"")[0])
-version = f"1.0.{v+1}"
-os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
-os.system(r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")
+        # git
+        os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
+
+        # pip
+        dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
+        v = int(dmy.split(".")[-1].split("\"")[0])
+        version = f"1.0.{v+1}"
+        os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
+        os.system(r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")

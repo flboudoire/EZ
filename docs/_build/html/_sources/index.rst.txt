@@ -17,7 +17,7 @@ Using pip:
 
 .. code:: bash
 
-    pip install EZ
+    pip install echem-EZ
 
 Or download the EZ folder on `Github <https://github.com/flboudoire/EZ>`_ and add it to your python path.
 
