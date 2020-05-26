@@ -68,7 +68,7 @@ if __name__ == "__main__":
         v = int(dmy.split(".")[-1].split("\"")[0])
         version = f"1.0.{v+1}"
         os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
-        os.system(fr"sed -i s/release = \".*\"/release = \"{version}\"/g docs/source/config.py")
+        os.system(fr"sed -i s/release = \'.*\'/release = \'{version}\'/g docs/source/config.py")
         os.system(
             r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")
 

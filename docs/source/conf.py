@@ -65,8 +65,7 @@ html_logo = "logo/readthedocs.png"
 
 html_theme_options = {
     'logo_only': False,
-    'display_version': True,
-    'style_nav_header_background': 'white',
+    'display_version': True
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
