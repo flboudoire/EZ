@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import shutil
 
 
 def list_notebooks():
@@ -31,47 +32,45 @@ def export_notebooks(ipynb_files):
 
     for file in ipynb_files:
 
-        os.system(rf"jupyter nbconvert --to markdown {file}.ipynb")
+        os.system(rf"jupyter nbconvert --to rst {file}.ipynb")
 
-        # center figures
-        clean_md = ""
-        with open(rf"{file}.md") as f:
+        # center figures and set table style
+        clean_file = ""
+        with open(rf"{file}.rst") as f:
             for line in f:
-                if "![svg]" in line:
-                    line = line.replace("![svg](", "")
-                    line = line.replace(")", "")
-                    clean_md += rf"<p align='center'><img src = {line}></p>"
-                else:
-                    clean_md += line
-
-        with open(rf"{file}.md", "w") as f:
-            f.write(clean_md)
-
-        # clean math
-        clean_md = ""
-        with open(rf"{file}.md") as f:
-            for line in f:
-                if "$$" in line:
-                    pattern = r'\$\$(.*?)\$\$'
-                    repl = r".. math:: \1"
-                    clean_md += re.sub(pattern, repl, line)
-                elif "$" in line:
-                    pattern = r'\$(.*?)\$'
-                    repl = r":math:`\1`"
-                    clean_md += re.sub(pattern, repl, line)
+                if ".. image::" in line:
+                    clean_file += line
+                    clean_file += "  :align: center"
                 elif "<table" in line:
                     pattern = r'class\=\"(.*?)\"'
                     repl = r"class = 'docutils'"
-                    clean_md += re.sub(pattern, repl, line)
+                    clean_file +=  re.sub(pattern, repl, line)
                 else:
-                    clean_md += line
+                    clean_file += line
 
+
+        with open(rf"{file}.rst", "w") as f:
+            f.write(clean_file)
+
+        # move rst files and assets
         fname = file.split("/")[-1]
-        with open(rf"docs/notebooks/{fname}.md", "w") as f:
-            f.write(clean_md)
+        os.system(rf"mv {file}.rst docs/source/{fname}.rst")
+        os.system(rf"rm -r docs/source/{fname}_files")
+        os.system(rf"mv {file}_files docs/source/{fname}_files")
 
 
 if __name__ == "__main__":
+
+    if len(sys.argv) < 2 or sys.argv[1] == "pip":
+        # pip
+        shutil.rmtree("dist")
+        dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
+        v = int(dmy.split(".")[-1].split("\"")[0])
+        version = f"1.0.{v+1}"
+        os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
+        os.system(fr"sed -i s/release = \".*\"/release = \"{version}\"/g docs/source/config.py")
+        os.system(
+            r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")
 
     if len(sys.argv) < 2 or sys.argv[1] == "docs":
         # get all jupyter notebook paths
@@ -83,19 +82,6 @@ if __name__ == "__main__":
         # update documentation
         os.system(r"cd docs; make clean; make html")
 
-        # copy images from examples
-        for file in ipynb_files:
-            fname = file.split("/")[-1]
-            os.system(rf"cp -ar {file}_files docs/_build/html/{fname}_files")
-
     if len(sys.argv) < 2 or sys.argv[1] == "git":
         # git
         os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
-
-    if len(sys.argv) < 2 or sys.argv[1] == "pip":
-        # pip
-        dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
-        v = int(dmy.split(".")[-1].split("\"")[0])
-        version = f"1.0.{v+1}"
-        os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
-        os.system(r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")
