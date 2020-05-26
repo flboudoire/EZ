@@ -1,4 +1,5 @@
-/.eggs
+.*
+!/.gitignore
 /echem_EZ.egg-info
 /dist
 /build
