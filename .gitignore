@@ -1,5 +1,5 @@
-.*
+.eggs
 !/.gitignore
-/echem_EZ.egg-info
-/dist
-/build
+echem_EZ.egg-info/
+dist/
+build/
