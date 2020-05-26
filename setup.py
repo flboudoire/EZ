@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="echem-EZ",
-    version="1.0.26",
+    version="1.0.27",
     author="Florent Boudoire",
     author_email="flboudoire@gmail.com",
     description="EZ - Z vs E made easy",
