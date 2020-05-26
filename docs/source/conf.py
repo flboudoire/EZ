@@ -22,7 +22,7 @@ copyright = '2020, Florent Boudoire'
 author = 'Florent Boudoire'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+version="1.0.26"
 
 
 # -- General configuration ---------------------------------------------------
@@ -64,7 +64,7 @@ html_theme = "sphinx_rtd_theme"
 html_logo = "logo/readthedocs.png"
 
 html_theme_options = {
-    'logo_only': False,
+    'logo_only': True,
     'display_version': True
 }
 

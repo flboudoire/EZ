@@ -61,17 +61,19 @@ def export_notebooks(ipynb_files):
 
 if __name__ == "__main__":
 
+    # pip
     if len(sys.argv) < 2 or sys.argv[1] == "pip":
-        # pip
-        shutil.rmtree("dist")
+        if os.path.exists("dist"):
+            shutil.rmtree("dist")
         dmy = os.popen(r"grep 'version=\".*\"' setup.py").read()
         v = int(dmy.split(".")[-1].split("\"")[0])
         version = f"1.0.{v+1}"
         os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g setup.py")
-        os.system(fr"sed -i s/release = \'.*\'/release = \'{version}\'/g docs/source/config.py")
+        os.system(fr"sed -i s/version=\".*\"/version=\"{version}\"/g docs/source/conf.py")
         os.system(
             r"python3 setup.py sdist bdist_wheel;twine upload dist/* --skip-existing")
 
+    # docs
     if len(sys.argv) < 2 or sys.argv[1] == "docs":
         # get all jupyter notebook paths
         ipynb_files = list_notebooks()
@@ -82,6 +84,6 @@ if __name__ == "__main__":
         # update documentation
         os.system(r"cd docs; make clean; make html")
 
+    # git
     if len(sys.argv) < 2 or sys.argv[1] == "git":
-        # git
         os.system(r"git pull;git add .;git commit -a -m 'Auto update';git push;")
