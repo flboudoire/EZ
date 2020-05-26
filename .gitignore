@@ -3,3 +3,4 @@
 echem\_EZ\.egg\-info/
 dist/
 build/
+examples/.ipynb_checkpoints
