@@ -8,6 +8,8 @@ potential using an equivalent circuit.
 Equivalent circuit definition
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+An equivalent circuit can be defined using
+
 .. code:: ipython3
 
     from EZ.model import Q, R
@@ -23,7 +25,7 @@ Equivalent circuit definition
 
 
 
-.. image:: EIS_files/EIS_3_0.svg
+.. image:: EIS_files/EIS_4_0.svg
   :align: center
 
 .. code:: ipython3
@@ -45,7 +47,7 @@ Equivalent circuit definition
 
 
 
-.. image:: EIS_files/EIS_4_0.svg
+.. image:: EIS_files/EIS_5_0.svg
   :align: center
 
 Loading and plotting the EIS data
@@ -65,7 +67,7 @@ Loading and plotting the EIS data
 
 
 
-.. image:: EIS_files/EIS_6_0.svg
+.. image:: EIS_files/EIS_7_0.svg
   :align: center
 
 Fitting and displaying fit results
@@ -78,7 +80,7 @@ Fitting and displaying fit results
 
 
 
-.. image:: EIS_files/EIS_8_0.svg
+.. image:: EIS_files/EIS_9_0.svg
   :align: center
 
 .. code:: ipython3
