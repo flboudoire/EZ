@@ -7,8 +7,10 @@ measured experimentally at different applied bias. In this example
 intensity modulated photocurrent spectroscopy (IMPS) data is used.
 Before reading this page please consult the `previous
 example <EIS.html>`__ showcasing in details the use of the classes and
-methods used here. Only parts of the model definition is different in
-the present example.
+methods used here. The only difference herein is the different model
+definition, using an equation instead of an equivalent circuit (we note
+that the equation presented in this example can also be fitted with an
+equivalent circuit composed of two RC circuits in series).
 
 Model equation definition and evaluation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +46,7 @@ response can be plotted using the **plot** method, in a similar fashion
 to the `model equivalent circuit presented in the EIS
 example <EIS.html#EC-eval>`__. Passing a **partial_models** argument
 also leads to a similar overlay. This argument in this case is a list of
-strings describing partial equations. We use it here to display the
+strings describing the partial equations. We use it here to display the
 surface and bulk contributions of the electrode to the impedance
 response.
 

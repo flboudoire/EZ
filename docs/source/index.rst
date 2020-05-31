@@ -25,7 +25,7 @@ Examples
 Dependencies
 ------------
 
-This code relies on the use of the scipy, numpy, pandas and matplotlib packages. It also uses the `lmfit package <https://lmfit.github.io/lmfit-py/intro.html>`_ (Matt Newville et al., LMFIT: Non-Linear Least-Square Minimization and Curve-Fitting for Python) and the `SchemDraw package <https://schemdraw.readthedocs.io/en/latest/>`_.
+This code relies on the use of the sympy, scipy, numpy, pandas and matplotlib packages. It also uses the `lmfit package <https://lmfit.github.io/lmfit-py/intro.html>`_ (Matt Newville et al., LMFIT: Non-Linear Least-Square Minimization and Curve-Fitting for Python) and the `SchemDraw package <https://schemdraw.readthedocs.io/en/latest/>`_.
 
 License
 -------
@@ -39,4 +39,5 @@ Contents
 
    EIS
    IMPS
-   docs
+   files
+   .. docs

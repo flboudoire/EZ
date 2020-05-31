@@ -4,7 +4,7 @@ Detailed example, fitting with a model equivalent circuit
 This example demonstrates how to use the EZ module to fit an equivalent
 circuit to an impedance vs angular frequency response, measured
 experimentally at different applied bias. In this example
-electrochemical impedance spectroscopy (EIS) data is used.
+electrochemical impedance spectroscopy (EIS) data is analyzed.
 
 .. raw:: html
 
@@ -61,12 +61,12 @@ The circuit can be displayed using its **print** method:
 
    </p>
 
-Evaluation of the equivalent circuit impedance vs frequency behavior
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Evaluation of the equivalent circuit impedance vs angular frequency behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is possible to evaluate the defined equivalent circuit impedance vs
-frequency characteristics. To this mean we need to initialize the
-parameters of the elements (R and Q) defined above. Depending on the
+The EZ module allows to evaluate an equivalent circuit impedance vs
+angular frequency characteristics. To this mean we need to initialize
+the parameters of the elements (R and Q) defined above. Depending on the
 kind of element a different number of parameter has to be initialized. A
 resistance for example has one parameter, its resistance value, named
 with “R\_” and the label of the considered element. A constant phase
@@ -74,8 +74,8 @@ element has two parameters, a pseudo-capacitance (“Q\_” + label) and a
 non-ideality factor (“n\_” + label). All the parameters are initialized
 using a dictionary whose keys are the parameter name and whose values
 are dictionnaries holding the variables used for initialization. These
-variables have to contain a value and can contain additional information
-on the parameter that will be used at the fitting step.
+variables have to contain a value and can also contain additional
+information on the parameter that will be used at the fitting step.
 
 .. raw:: html
 
@@ -88,27 +88,27 @@ on the parameter that will be used at the fitting step.
 .. code:: ipython3
 
     pars = {
-        "R_S":    dict(value = 0.025, vary = False),
-        "R_Bulk": dict(value = 10, min = 0),
-        "R_SS":   dict(value = 50, min = 0),
-        "Q_SC":   dict(value = 1e-3, min = 0),
-        "Q_SS":   dict(value = 1e-2, min = 0),
-        "n_SC":   dict(value = 0.9, vary = False),
-        "n_SS":   dict(value = 0.8, vary = False)
+        "R_S":    dict( value = 0.025, vary = False ),
+        "R_Bulk": dict( value = 10,    min = 0      ),
+        "R_SS":   dict( value = 50,    min = 0      ),
+        "Q_SC":   dict( value = 1e-3,  min = 0      ),
+        "Q_SS":   dict( value = 1e-2,  min = 0      ),
+        "n_SC":   dict( value = 0.9,   vary = False ),
+        "n_SS":   dict( value = 0.8,   vary = False )
     }
 
-The model impedance vs frequency is evaluated and displayed in Bode and
-Nyquist plots using its **plot** method. A range of frequencies can be
-passed via the **range_omega** argument. Moreover, a list of additional
-circuits can be passed via the **partial_models** argument. These models
-impedances are overlayed in the Bode plots order to vizualise the
-contribution of some components to the overall impedance characteristic.
-In the Nyquist plot the regions of the impedance where the partial
-circuit’ imaginary part is larger are highlighted with a corresponding
-color. Here for example we use this visualization to show the parts of
-the circuit influencing respectively the low and high frequencies
-responses, corresponding respectively to the surface and bulk of an
-electrode.
+The model impedance vs angular frequency is evaluated and displayed in
+Bode and Nyquist plots using its **plot** method. A range of frequencies
+can be passed via the **range_omega** argument. Moreover, a list of
+additional circuits can be passed via the **partial_models** argument.
+It allows to vizualise the contribution of some components to the
+overall impedance characteristic. These models impedances are overlayed
+in the Bode plots. In the Nyquist plot the regions where a partial
+circuit impedance absolute value is larger is highlighted with a
+corresponding color. Here for example we use this visualization to show
+the parts of the circuit influencing respectively the low and high
+frequencies responses, corresponding respectively to the surface and
+bulk of an electrode.
 
 .. code:: ipython3
 
@@ -140,7 +140,7 @@ the folder where the files are stored. To be loaded these files should
 be formatted properly. The files used in this example can be found
 `here <https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light>`__,
 and the details on how to format the files for proper loading are
-documented `here <files.html>`__. Optional argument passed in this
+documented `here <files.html>`__. Optional arguments passed in this
 example are the pH to convert to RHE and electrode area to normalize the
 impedance.
 
@@ -156,9 +156,9 @@ impedance.
 
 In this example we recorded the impedance at frequencies up to 10 MHz.
 Since there is no relevant impedance trend above 10 kHz change the
-dataset range of frequencies using the set_freq_range method. Then the
-dataset is plotted using the plot method where the data is represented
-as full circles.
+dataset range of frequencies using the **set_freq_range** method. Then
+the dataset is plotted using the plot method where the data is
+represented as full circles.
 
 .. code:: ipython3
 
@@ -186,7 +186,7 @@ to 0. Maximum values could be used also using the variable **max**.
 
     ds.fit(model, pars=pars)
 
-Once the fit is performed using the **plot** method also displays an
+Once the fit is performed, using the **plot** method also displays an
 evaluation of the fit as a full line of the same color as the
 corresponding data:
 
@@ -208,7 +208,7 @@ method. The resulting exported files for this example can be consulted
     ds.export()
 
 The parameters fitted value and standard error can be exported using the
-**export_result** method. The resulting exported file for this example
+**export_result** method. The resulting exported files for this example
 can be consulted
 `here <https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light%20-%20fit%20results>`__.
 Passing the argument **show=True** to this method also displays these
