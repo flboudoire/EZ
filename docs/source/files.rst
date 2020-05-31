@@ -2,7 +2,7 @@
 Files formatting
 ^^^^^^^^^^^^^^^^
 
-For proper loading the impedance vs frequency response files should be formatted according to the following guidelines; the files should:
+For proper loading the impedance vs frequency response files should be formatted according to the following guidelines, the files should:
 
 - be in the same folder
 
