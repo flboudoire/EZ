@@ -18,9 +18,9 @@ Or download the EZ folder on `Github <https://github.com/flboudoire/EZ>`_ and ad
 Examples
 --------
 
-- :ref:`EIS<EIS>`: Loading, plotting and fitting electrochemical impedance spectroscopy data using an equivalent circuit model.
+- :ref:`Detailed example, fitting with a model equivalent circuit<Detailed example, fitting with a model equivalent circuit>`: Loading, plotting and fitting electrochemical impedance spectroscopy data using an equivalent circuit model.
 
-- :ref:`IMPS<IMPS>`: Loading, plotting and fitting intensity modulated photocurrent spectroscopy data using a model equation.
+- :ref:`Follow up example, fitting with a model equation<Follow up example, fitting with a model equation>`: Loading, plotting and fitting intensity modulated photocurrent spectroscopy data using a model equation.
 
 Dependencies
 ------------

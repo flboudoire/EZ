@@ -1,5 +1,5 @@
-Documentation
--------------
+Code documentation
+------------------
 
 .. toctree::
    

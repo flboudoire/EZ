@@ -1,9 +1,10 @@
-EIS
-===
+Detailed example, fitting with a model equivalent circuit
+=========================================================
 
-This example showcases the use of the EZ module in order to fit
-electrochemical impedance spectroscopy data recorded at different
-potential using an equivalent circuit.
+This example demonstrates how to use the EZ module to fit an equivalent
+circuit to an impedance vs angular frequency response, measured
+experimentally at different applied bias. In this example
+electrochemical impedance spectroscopy (EIS) data is used.
 
 .. raw:: html
 
@@ -52,6 +53,14 @@ The circuit can be displayed using its **print** method:
 .. image:: EIS_files/EIS_9_0.svg
   :align: center
 
+.. raw:: html
+
+   <p id="EC-eval">
+
+.. raw:: html
+
+   </p>
+
 Evaluation of the equivalent circuit impedance vs frequency behavior
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -90,10 +99,16 @@ on the parameter that will be used at the fitting step.
 
 The model impedance vs frequency is evaluated and displayed in Bode and
 Nyquist plots using its **plot** method. A range of frequencies can be
-given as well as additional circuits that can be overlayed in order to
-vizualise the contribution of some components to the overall impedance
-characteristic. Here for example we use it to visualize the parts of the
-circuit influencing respectively the low and high frequencies responses.
+passed via the **range_omega** argument. Moreover, a list of additional
+circuits can be passed via the **partial_models** argument. These models
+impedances are overlayed in the Bode plots order to vizualise the
+contribution of some components to the overall impedance characteristic.
+In the Nyquist plot the regions of the impedance where the partial
+circuit’ imaginary part is larger are highlighted with a corresponding
+color. Here for example we use this visualization to show the parts of
+the circuit influencing respectively the low and high frequencies
+responses, corresponding respectively to the surface and bulk of an
+electrode.
 
 .. code:: ipython3
 
@@ -105,8 +120,16 @@ circuit influencing respectively the low and high frequencies responses.
 
 
 
-.. image:: EIS_files/EIS_15_0.svg
+.. image:: EIS_files/EIS_16_0.svg
   :align: center
+
+.. raw:: html
+
+   <p id="load-plot">
+
+.. raw:: html
+
+   </p>
 
 Loading and plotting the EIS data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,7 +157,8 @@ impedance.
 In this example we recorded the impedance at frequencies up to 10 MHz.
 Since there is no relevant impedance trend above 10 kHz change the
 dataset range of frequencies using the set_freq_range method. Then the
-dataset is plotted using the plot method.
+dataset is plotted using the plot method where the data is represented
+as full circles.
 
 .. code:: ipython3
 
@@ -143,7 +167,7 @@ dataset is plotted using the plot method.
 
 
 
-.. image:: EIS_files/EIS_20_0.svg
+.. image:: EIS_files/EIS_22_0.svg
   :align: center
 
 Fitting and exporting fit results
@@ -163,8 +187,8 @@ to 0. Maximum values could be used also using the variable **max**.
     ds.fit(model, pars=pars)
 
 Once the fit is performed using the **plot** method also displays an
-evaluation of the fit as a line of the same color as the corresponding
-data:
+evaluation of the fit as a full line of the same color as the
+corresponding data:
 
 .. code:: ipython3
 
@@ -172,7 +196,7 @@ data:
 
 
 
-.. image:: EIS_files/EIS_25_0.svg
+.. image:: EIS_files/EIS_27_0.svg
   :align: center
 
 The raw data and corresponding fit can be exported using the **export**
