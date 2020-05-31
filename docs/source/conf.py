@@ -64,7 +64,7 @@ html_theme = "sphinx_rtd_theme"
 html_logo = "logo/readthedocs.png"
 
 html_theme_options = {
-    'logo_only': True,
+    'logo_only': False,
     'display_version': True
 }
 
