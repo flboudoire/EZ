@@ -4,12 +4,6 @@ EZ - Z vs E made easy
 
 A python module to load, fit and plot impedance spectroscopy data. The datasets contain the impedance evolution as a function of the frequency of a perturbation (e.g. potential or light bias), recorded at different applied potentials. This data can be fitted using a model equivalent circuit or a custom model equation.
 
-.. toctree::
-
-   EIS
-   IMPS
-   docs
-
 Installation
 ------------
 
@@ -37,3 +31,12 @@ License
 -------
 
 Licensed under the `MIT License <https://github.com/flboudoire/EZ/blob/master/LICENSE>`_.
+
+Contents
+--------
+
+.. toctree::
+
+   EIS
+   IMPS
+   docs

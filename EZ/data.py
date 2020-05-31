@@ -4,7 +4,8 @@ import pandas as pd
 import lmfit
 import glob
 from collections import OrderedDict
-from IPython.display import display, HTML
+from IPython.display import display
+import os
 
 from EZ.parameter import Parameter
 import EZ.stderr as stderr
@@ -35,10 +36,10 @@ class Data():
         self.Z = self.Z[idx]
 
     def plot(
-        self,
-        axes=None,
-        color="C0",
-        partial_models=None):
+            self,
+            axes=None,
+            color="C0",
+            partial_models=None):
 
         if axes is None:
             fig, axes = figure_layout()
@@ -71,25 +72,27 @@ class Data():
             pars=pars
         )
         self.pars = self.fit_result.params
+        self.Z_fit = self.model.eval_Z(self.pars, self.omega)
 
 
 class Dataset():
 
     def __init__(
-        self,
-        folder,
-        pH=None,
-        area=1.,
-        ref=("Ag/AgCl", 0)):
+            self,
+            folder,
+            pH=None,
+            area=1.,
+            ref=("Ag/AgCl", 0)):
 
         self.folder = folder
         self.pH = pH
         self.area = area
         self.ref = ref
         if self.pH is None:
-            self.E_label = fr"E [V vs {ref[0]}]"
+            self.E_unit = fr"V vs {ref[0]}"
         else:
-            self.E_label = fr"E [V vs RHE]"
+            self.E_unit = fr"V vs RHE"
+        self.E_label = fr"E [{self.E_unit}]"
         self.load()
 
     def load(self):
@@ -121,10 +124,10 @@ class Dataset():
             self.datas[E].set_freq_range(range_freq)
 
     def fit(
-        self,
-        model,
-        pars=dict(),
-        consecutive=True):
+            self,
+            model,
+            pars=dict(),
+            consecutive=True):
 
         for i, E in enumerate(self.datas):
             if i > 0 and consecutive:
@@ -148,10 +151,10 @@ class Dataset():
             )
 
     def plot(
-        self,
-        axes=None,
-        print_result=True,
-        partial_models=None):
+            self,
+            axes=None,
+            print_result=True,
+            partial_models=None):
 
         if axes is None:
             fig, axes = figure_layout()
@@ -177,7 +180,41 @@ class Dataset():
             pad=0.17
         )
 
-    def print_result(self, folder = None):
+    def export(self, folder=None):
+
+        if folder is None:
+            folder = self.folder + " - analysis/"
+
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        labels = axes_labels()
+        columns = [
+            labels["omega"],
+            labels["real"] + " raw",
+            labels["imag"] + " raw",
+            labels["real"] + " fit",
+            labels["imag"] + " fit",
+        ]
+        for E in self.datas:
+            data = np.vstack((
+                self.datas[E].omega,
+                self.datas[E].Z.real,
+                -self.datas[E].Z.imag,
+                self.datas[E].Z_fit.real,
+                -self.datas[E].Z_fit.imag
+                ))
+            df = pd.DataFrame(data = data.T, columns = columns)
+            filename = rf"{E:.3f} ".replace(".", "_") + self.E_unit + ".csv"
+            df.to_csv(folder + filename, index=False)
+
+    def export_result(self, show=False, folder=None):
+
+        if folder is None:
+            folder = self.folder + " - fit results/"
+
+        if not os.path.exists(folder):
+            os.makedirs(folder)
 
         columns = ["value", "stderr"]
         fit_results = OrderedDict()
@@ -187,7 +224,8 @@ class Dataset():
             pars = self.datas[E].pars
             for name in pars:
                 if pars[name].vary:
-                    if name not in fit_results: fit_results[name] = list()
+                    if name not in fit_results:
+                        fit_results[name] = list()
                     values = [f"{getattr(pars[name], attr):.3g}" for attr in columns]
                     fit_results[name].append(values)
                 else:
@@ -195,27 +233,42 @@ class Dataset():
 
         if len(fit_results_fixed.values()) > 0:
             df = pd.DataFrame(
-                index = [name for name in fit_results_fixed],
-                columns = ["value (fixed)"],
-                data = fit_results_fixed.values())
-            display(df)
+                index=[name for name in fit_results_fixed],
+                columns=["value (fixed)"],
+                data=fit_results_fixed.values()
+                )
+            if show:
+                display(df)
+            df.to_csv(folder + "fixed parameters.csv")
 
         cols = [fr"{name}{attr}" for name in fit_results for attr in ["", " std"]]
-        df = pd.DataFrame(
-            index = self.datas.keys(),
-            columns = cols,
-            data = np.hstack([v for v in fit_results.values()]))
+        data = np.hstack([v for v in fit_results.values()])
+        df = pd.DataFrame(index=self.datas.keys(), columns=cols, data=data)
         df.columns.name = self.E_label
-        display(df)
+        if show:
+            display(df)
+        cols.insert(0, self.E_label)
+        data = np.hstack((np.array([list(self.datas.keys())]).T, data))
+        df = pd.DataFrame(
+            columns=cols,
+            data=data
+            )
+        df.to_csv(folder + "varying parameters.csv", index = False)
 
 
-def figure_layout():
+def axes_labels():
 
     labels = {
-        "omega": r"$\omega$ [rad $\cdot$ s$^{-1}$]",
+        "omega": r"ω [rad · s⁻¹]",
         "real": r"Re(Z)",
         "imag": r"-Im(Z)"
     }
+
+    return labels
+
+def figure_layout():
+
+    labels = axes_labels()
 
     width = 16 / 2.54  # 18 cm to inches
     fig = plt.figure(figsize=(width, width / 2))
@@ -239,6 +292,7 @@ def figure_layout():
     ax[2].set_aspect('equal', 'box')
 
     return fig, ax
+
 
 def make_ticks(x):
 

@@ -5,10 +5,22 @@ This example showcases the use of the EZ module in order to fit
 electrochemical impedance spectroscopy data recorded at different
 potential using an equivalent circuit.
 
+.. raw:: html
+
+   <p id="EC-def">
+
+.. raw:: html
+
+   </p>
+
 Equivalent circuit definition
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-An equivalent circuit can be defined using
+An equivalent circuit can be defined using the classes **R, C, Q** and
+**W**. **R** correspond to a resistance, **C** a capacitance, **Q** a
+constant phase element and **W** a Warburg element. In this example we
+only use **R** and **Q**. We initialize all the elements in the circuit
+with a unique label:
 
 .. code:: ipython3
 
@@ -19,26 +31,72 @@ An equivalent circuit can be defined using
     Q_b = Q("SC")
     R_s = R("SS")
     Q_s = Q("SS")
-    
+
+Then we can define a model equivalent circuit using these elements.
+Adding elements is equivalent to connecting them in series and dividing
+elements is equivalent to connecting them in parallel. Blocks of
+elements can be constituted using parentheses.
+
+.. code:: ipython3
+
     model = R_sol + Q_b/(R_b + Q_s/R_s)
+
+The circuit can be displayed using its **print** method:
+
+.. code:: ipython3
+
     model.print()
 
 
 
-.. image:: EIS_files/EIS_4_0.svg
+.. image:: EIS_files/EIS_9_0.svg
   :align: center
+
+Evaluation of the equivalent circuit impedance vs frequency behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is possible to evaluate the defined equivalent circuit impedance vs
+frequency characteristics. To this mean we need to initialize the
+parameters of the elements (R and Q) defined above. Depending on the
+kind of element a different number of parameter has to be initialized. A
+resistance for example has one parameter, its resistance value, named
+with “R\_” and the label of the considered element. A constant phase
+element has two parameters, a pseudo-capacitance (“Q\_” + label) and a
+non-ideality factor (“n\_” + label). All the parameters are initialized
+using a dictionary whose keys are the parameter name and whose values
+are dictionnaries holding the variables used for initialization. These
+variables have to contain a value and can contain additional information
+on the parameter that will be used at the fitting step.
+
+.. raw:: html
+
+   <p id="pars-def">
+
+.. raw:: html
+
+   </p>
 
 .. code:: ipython3
 
     pars = {
         "R_S":    dict(value = 0.025, vary = False),
-        "R_Bulk": dict(value = 10),
-        "R_SS":   dict(value = 50),
-        "Q_SC":   dict(value = 1e-3),
-        "Q_SS":   dict(value = 1e-2),
+        "R_Bulk": dict(value = 10, min = 0),
+        "R_SS":   dict(value = 50, min = 0),
+        "Q_SC":   dict(value = 1e-3, min = 0),
+        "Q_SS":   dict(value = 1e-2, min = 0),
         "n_SC":   dict(value = 0.9, vary = False),
         "n_SS":   dict(value = 0.8, vary = False)
     }
+
+The model impedance vs frequency is evaluated and displayed in Bode and
+Nyquist plots using its **plot** method. A range of frequencies can be
+given as well as additional circuits that can be overlayed in order to
+vizualise the contribution of some components to the overall impedance
+characteristic. Here for example we use it to visualize the parts of the
+circuit influencing respectively the low and high frequencies responses.
+
+.. code:: ipython3
+
     model.plot(
         partial_models=[Q_b/R_b, Q_s/R_s],
         pars=pars,
@@ -47,11 +105,21 @@ An equivalent circuit can be defined using
 
 
 
-.. image:: EIS_files/EIS_5_0.svg
+.. image:: EIS_files/EIS_15_0.svg
   :align: center
 
 Loading and plotting the EIS data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Data loading, plotting and fitting is done using an object of class
+**Dataset**. This object initialization requires at least the path to
+the folder where the files are stored. To be loaded these files should
+be formatted properly. The files used in this example can be found
+`here <https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light>`__,
+and the details on how to format the files for proper loading are
+documented `here <files.html>`__. Optional argument passed in this
+example are the pH to convert to RHE and electrode area to normalize the
+impedance.
 
 .. code:: ipython3
 
@@ -62,30 +130,67 @@ Loading and plotting the EIS data
         pH=14,
         area=0.25
     )
+
+In this example we recorded the impedance at frequencies up to 10 MHz.
+Since there is no relevant impedance trend above 10 kHz change the
+dataset range of frequencies using the set_freq_range method. Then the
+dataset is plotted using the plot method.
+
+.. code:: ipython3
+
     ds.set_freq_range([1e-10, 1e4])
     ds.plot()
 
 
 
-.. image:: EIS_files/EIS_7_0.svg
+.. image:: EIS_files/EIS_20_0.svg
   :align: center
 
-Fitting and displaying fit results
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fitting and exporting fit results
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The fit is performed using the **fit** method. This method requires two
+arguments, the model used for the fit, defined here as an `equivalent
+circuit <#EC-def>`__, and a dictionary setting the model parameters
+initial guess and constraints. In this dictionnary, declared
+`previously <#pars-def>`__, we fixed some parameters (**R_S**, **n_SC**
+and **n_SS**) by setting the variable **vary** to **False**. We also set
+the remaining parameters to be positive by setting the variable **min**
+to 0. Maximum values could be used also using the variable **max**.
 
 .. code:: ipython3
 
     ds.fit(model, pars=pars)
+
+Once the fit is performed using the **plot** method also displayed an
+evaluation of the fit as a line of the same color as the corresponding
+data:
+
+.. code:: ipython3
+
     ds.plot()
 
 
 
-.. image:: EIS_files/EIS_9_0.svg
+.. image:: EIS_files/EIS_25_0.svg
   :align: center
+
+The raw data and corresponding fit can be exported using the **export**
+method. The resulting exported files for this example can be consulted
+`here <>`__.
 
 .. code:: ipython3
 
-    ds.print_result()
+    ds.export()
+
+The parameters value and standard error can be printed using the
+**print_result** method and exported using the **export_result** method.
+The resulting exported file for this example can be consulted
+`here <>`__.
+
+.. code:: ipython3
+
+    ds.export_result(show=True)
 
 
 
