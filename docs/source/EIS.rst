@@ -162,7 +162,7 @@ to 0. Maximum values could be used also using the variable **max**.
 
     ds.fit(model, pars=pars)
 
-Once the fit is performed using the **plot** method also displayed an
+Once the fit is performed using the **plot** method also displays an
 evaluation of the fit as a line of the same color as the corresponding
 data:
 
@@ -177,16 +177,18 @@ data:
 
 The raw data and corresponding fit can be exported using the **export**
 method. The resulting exported files for this example can be consulted
-`here <>`__.
+`here <https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light%20-%20analysis>`__.
 
 .. code:: ipython3
 
     ds.export()
 
-The parameters value and standard error can be printed using the
-**print_result** method and exported using the **export_result** method.
-The resulting exported file for this example can be consulted
-`here <>`__.
+The parameters fitted value and standard error can be exported using the
+**export_result** method. The resulting exported file for this example
+can be consulted
+`here <https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light%20-%20fit%20results>`__.
+Passing the argument **show=True** to this method also displays these
+values as shown below.
 
 .. code:: ipython3
 
