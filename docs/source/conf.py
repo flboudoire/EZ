@@ -38,6 +38,8 @@ extensions = [
     'sphinx.ext.autosectionlabel'
 ]
 
+autodoc_mock_imports = ['sphinxcontrib.napoleon']
+
 # source_suffix = '.rst'
 source_suffix = '.rst'
 
