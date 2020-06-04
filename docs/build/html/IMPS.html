@@ -176,7 +176,7 @@ equivalent circuit composed of two RC circuits in series).</p>
 <h2>Model equation definition and evaluation<a class="headerlink" href="#model-equation-definition-and-evaluation" title="Permalink to this headline">¶</a></h2>
 <p>A model equation is defined using the <strong>Equation</strong> class. This class is
 initialized using a string describing the equation:</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.model</span> <span class="kn">import</span> <span class="n">Equation</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.model</span> <span class="kn">import</span> <span class="n">Equation</span>
 
 <span class="n">J_bulk</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;J_e/(1+(1j*omega*tau_e))&quot;</span>
 <span class="n">J_surf</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;J_r/(1+(1j*omega*tau_r))&quot;</span>
@@ -186,7 +186,7 @@ initialized using a string describing the equation:</p>
 </div>
 <p>After its definition the equation can be printed using its <strong>print</strong>
 method:</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="math notranslate nohighlight">
@@ -199,7 +199,7 @@ also leads to a similar overlay. This argument in this case is a list of
 strings describing the partial equations. We use it here to display the
 surface and bulk contributions of the electrode to the impedance
 response.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;J_e&quot;</span><span class="p">:</span>   <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">),</span>
     <span class="s2">&quot;J_r&quot;</span><span class="p">:</span>   <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">),</span>
     <span class="s2">&quot;tau_e&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="mf">2e-4</span><span class="p">),</span>
@@ -223,7 +223,7 @@ argument of this method. The results are then displayed and exported,
 using the <strong>plot</strong> and <strong>export_result</strong> methods. The resulting exported
 file can be consulted
 <a class="reference external" href="https://github.com/flboudoire/EZ/blob/master/examples/data/IMPS%20CFO%20pH14%20-%20fit%20results">here</a>.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span>
     <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;data/IMPS CFO pH14&quot;</span><span class="p">,</span>

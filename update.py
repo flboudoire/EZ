@@ -39,6 +39,7 @@ def export_notebooks(ipynb_files):
         clean_file = ""
         with open(rf"{file}.rst") as f:
             for line in f:
+                line = line.replace(".. code:: ipython3", ".. code:: python3")
                 if ".. image::" in line:
                     clean_file += line
                     clean_file += "  :align: center"

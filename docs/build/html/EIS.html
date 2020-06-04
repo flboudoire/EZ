@@ -175,7 +175,7 @@ electrochemical impedance spectroscopy (EIS) data is analyzed.</p>
 constant phase element and <strong>W</strong> a Warburg element. In this example we
 only use <strong>R</strong> and <strong>Q</strong>. We initialize all the elements in the circuit
 with a unique label:</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.model</span> <span class="kn">import</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.model</span> <span class="kn">import</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
 
 <span class="n">R_sol</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
 <span class="n">R_b</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="s2">&quot;Bulk&quot;</span><span class="p">)</span>
@@ -188,11 +188,11 @@ with a unique label:</p>
 Adding elements is equivalent to connecting them in series and dividing
 elements is equivalent to connecting them in parallel. Blocks of
 elements can be constituted using parentheses.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">R_sol</span> <span class="o">+</span> <span class="n">Q_b</span><span class="o">/</span><span class="p">(</span><span class="n">R_b</span> <span class="o">+</span> <span class="n">Q_s</span><span class="o">/</span><span class="n">R_s</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">R_sol</span> <span class="o">+</span> <span class="n">Q_b</span><span class="o">/</span><span class="p">(</span><span class="n">R_b</span> <span class="o">+</span> <span class="n">Q_s</span><span class="o">/</span><span class="n">R_s</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The circuit can be displayed using its <strong>print</strong> method:</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="_images/EIS_9_0.svg" class="align-center" src="_images/EIS_9_0.svg" /><p id="EC-eval"></p></div>
@@ -210,7 +210,7 @@ using a dictionary whose keys are the parameter name and whose values
 are dictionnaries holding the variables used for initialization. These
 variables have to contain a value and can also contain additional
 information on the parameter that will be used at the fitting step.</p>
-<p id="pars-def"></p><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span>
+<p id="pars-def"></p><div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">pars</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;R_S&quot;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">0.025</span><span class="p">,</span> <span class="n">vary</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">),</span>
     <span class="s2">&quot;R_Bulk&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>    <span class="nb">min</span> <span class="o">=</span> <span class="mi">0</span>      <span class="p">),</span>
     <span class="s2">&quot;R_SS&quot;</span><span class="p">:</span>   <span class="nb">dict</span><span class="p">(</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>    <span class="nb">min</span> <span class="o">=</span> <span class="mi">0</span>      <span class="p">),</span>
@@ -233,7 +233,7 @@ corresponding color. Here for example we use this visualization to show
 the parts of the circuit influencing respectively the low and high
 frequencies responses, corresponding respectively to the surface and
 bulk of an electrode.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">partial_models</span><span class="o">=</span><span class="p">[</span><span class="n">Q_b</span><span class="o">/</span><span class="n">R_b</span><span class="p">,</span> <span class="n">Q_s</span><span class="o">/</span><span class="n">R_s</span><span class="p">],</span>
     <span class="n">pars</span><span class="o">=</span><span class="n">pars</span><span class="p">,</span>
     <span class="n">range_omega</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">]</span>
@@ -252,7 +252,7 @@ and the details on how to format the files for proper loading are
 documented <a class="reference external" href="files.html">here</a>. Optional arguments passed in this
 example are the pH to convert to RHE and electrode area to normalize the
 impedance.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">EZ.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span>
     <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;data/EIS CFO pH14 light&quot;</span><span class="p">,</span>
@@ -266,7 +266,7 @@ Since there is no relevant impedance trend above 10 kHz change the
 dataset range of frequencies using the <strong>set_freq_range</strong> method. Then
 the dataset is plotted using the plot method where the data is
 represented as full circles.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">set_freq_range</span><span class="p">([</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">])</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">set_freq_range</span><span class="p">([</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">])</span>
 <span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -281,19 +281,19 @@ initial guess and constraints. In this dictionnary, declared
 and <strong>n_SS</strong>) by setting the variable <strong>vary</strong> to <strong>False</strong>. We also set
 the remaining parameters to be positive by setting the variable <strong>min</strong>
 to 0. Maximum values could be used also using the variable <strong>max</strong>.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">pars</span><span class="o">=</span><span class="n">pars</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">pars</span><span class="o">=</span><span class="n">pars</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Once the fit is performed, using the <strong>plot</strong> method also displays an
 evaluation of the fit as a full line of the same color as the
 corresponding data:</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="_images/EIS_27_0.svg" class="align-center" src="_images/EIS_27_0.svg" /><p>The raw data and corresponding fit can be exported using the <strong>export</strong>
 method. The resulting exported files for this example can be consulted
 <a class="reference external" href="https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light%20-%20analysis">here</a>.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The parameters fitted value and standard error can be exported using the
@@ -302,7 +302,7 @@ can be consulted
 <a class="reference external" href="https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light%20-%20fit%20results">here</a>.
 Passing the argument <strong>show=True</strong> to this method also displays these
 values as shown below.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">export_result</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">export_result</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div>

@@ -23,7 +23,7 @@ constant phase element and **W** a Warburg element. In this example we
 only use **R** and **Q**. We initialize all the elements in the circuit
 with a unique label:
 
-.. code:: ipython3
+.. code:: python3
 
     from EZ.model import Q, R
     
@@ -38,13 +38,13 @@ Adding elements is equivalent to connecting them in series and dividing
 elements is equivalent to connecting them in parallel. Blocks of
 elements can be constituted using parentheses.
 
-.. code:: ipython3
+.. code:: python3
 
     model = R_sol + Q_b/(R_b + Q_s/R_s)
 
 The circuit can be displayed using its **print** method:
 
-.. code:: ipython3
+.. code:: python3
 
     model.print()
 
@@ -85,7 +85,7 @@ information on the parameter that will be used at the fitting step.
 
    </p>
 
-.. code:: ipython3
+.. code:: python3
 
     pars = {
         "R_S":    dict( value = 0.025, vary = False ),
@@ -110,7 +110,7 @@ the parts of the circuit influencing respectively the low and high
 frequencies responses, corresponding respectively to the surface and
 bulk of an electrode.
 
-.. code:: ipython3
+.. code:: python3
 
     model.plot(
         partial_models=[Q_b/R_b, Q_s/R_s],
@@ -144,7 +144,7 @@ documented `here <files.html>`__. Optional arguments passed in this
 example are the pH to convert to RHE and electrode area to normalize the
 impedance.
 
-.. code:: ipython3
+.. code:: python3
 
     from EZ.data import Dataset
     
@@ -160,7 +160,7 @@ dataset range of frequencies using the **set_freq_range** method. Then
 the dataset is plotted using the plot method where the data is
 represented as full circles.
 
-.. code:: ipython3
+.. code:: python3
 
     ds.set_freq_range([1e-10, 1e4])
     ds.plot()
@@ -182,7 +182,7 @@ and **n_SS**) by setting the variable **vary** to **False**. We also set
 the remaining parameters to be positive by setting the variable **min**
 to 0. Maximum values could be used also using the variable **max**.
 
-.. code:: ipython3
+.. code:: python3
 
     ds.fit(model, pars=pars)
 
@@ -190,7 +190,7 @@ Once the fit is performed, using the **plot** method also displays an
 evaluation of the fit as a full line of the same color as the
 corresponding data:
 
-.. code:: ipython3
+.. code:: python3
 
     ds.plot()
 
@@ -203,7 +203,7 @@ The raw data and corresponding fit can be exported using the **export**
 method. The resulting exported files for this example can be consulted
 `here <https://github.com/flboudoire/EZ/tree/master/examples/data/EIS%20CFO%20pH14%20light%20-%20analysis>`__.
 
-.. code:: ipython3
+.. code:: python3
 
     ds.export()
 
@@ -214,7 +214,7 @@ can be consulted
 Passing the argument **show=True** to this method also displays these
 values as shown below.
 
-.. code:: ipython3
+.. code:: python3
 
     ds.export_result(show=True)
 

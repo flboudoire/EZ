@@ -18,7 +18,7 @@ Model equation definition and evaluation
 A model equation is defined using the **Equation** class. This class is
 initialized using a string describing the equation:
 
-.. code:: ipython3
+.. code:: python3
 
     from EZ.model import Equation
     
@@ -30,7 +30,7 @@ initialized using a string describing the equation:
 After its definition the equation can be printed using its **print**
 method:
 
-.. code:: ipython3
+.. code:: python3
 
     model.print()
 
@@ -50,7 +50,7 @@ strings describing the partial equations. We use it here to display the
 surface and bulk contributions of the electrode to the impedance
 response.
 
-.. code:: ipython3
+.. code:: python3
 
     pars = {
         "J_e":   dict(value = -0.3),
@@ -81,7 +81,7 @@ using the **plot** and **export_result** methods. The resulting exported
 file can be consulted
 `here <https://github.com/flboudoire/EZ/blob/master/examples/data/IMPS%20CFO%20pH14%20-%20fit%20results>`__.
 
-.. code:: ipython3
+.. code:: python3
 
     from EZ.data import Dataset
     
