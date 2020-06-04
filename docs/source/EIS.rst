@@ -23,7 +23,7 @@ constant phase element and **W** a Warburg element. In this example we
 only use **R** and **Q**. We initialize all the elements in the circuit
 with a unique label:
 
-.. code:: ipython3
+.. code:: python
 
     from EZ.model import Q, R
     
