@@ -32,13 +32,11 @@ version="1.0.31"
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    # 'sphinxcontrib.napoleon',
+    'sphinxcontrib.napoleon',
     'sphinx_rtd_theme',
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel'
 ]
-
-# autodoc_mock_imports = ['sphinxcontrib.napoleon']
 
 # source_suffix = '.rst'
 source_suffix = '.rst'
