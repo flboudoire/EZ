@@ -22,7 +22,7 @@ copyright = '2020, Florent Boudoire'
 author = 'Florent Boudoire'
 
 # The full version, including alpha/beta/rc tags
-version="1.0.31"
+version="1.0.32"
 
 
 # -- General configuration ---------------------------------------------------
