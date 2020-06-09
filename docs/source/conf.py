@@ -32,7 +32,7 @@ version="1.0.32"
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    # 'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
     'sphinx_rtd_theme',
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel'
